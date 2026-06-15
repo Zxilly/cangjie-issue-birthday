@@ -1,0 +1,253 @@
+/* ============================================================
+   蛋糕日 CakeDay — Design Tokens & Base Styles
+   (Fonts are loaded via <link> in index.html)
+   ============================================================ */
+
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  /* type */
+  --font-display: "Space Grotesk", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-body: "IBM Plex Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", ui-monospace, monospace;
+
+  /* spacing (4px base) */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
+  --s5: 20px; --s6: 24px; --s8: 32px; --s10: 40px;
+  --s12: 48px; --s16: 64px; --s20: 80px;
+
+  /* radius */
+  --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
+
+  /* content width */
+  --max-w: 760px;
+
+  /* semantic (theme-independent hue, lightness adjusts per theme below) */
+  --success: oklch(58% 0.13 150);
+  --success-soft: oklch(94% 0.05 150);
+  --error: oklch(58% 0.19 25);
+  --error-soft: oklch(94% 0.06 25);
+  --warn: oklch(72% 0.14 75);
+  --warn-soft: oklch(95% 0.05 80);
+
+  /* gold for elder badges */
+  --gold: oklch(75% 0.13 85);
+  --gold-deep: oklch(64% 0.13 70);
+
+  /* motion */
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --ease-back: cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ---- Accent themes (shared chroma/lightness, vary hue) ---- */
+[data-accent="blue"] {
+  --accent: oklch(57% 0.115 260);
+  --accent-strong: oklch(48% 0.125 262);
+  --accent-ink: oklch(99% 0.005 260);
+  --accent-soft: oklch(95% 0.022 258);
+  --accent-glow: oklch(57% 0.115 260 / 0.26);
+}
+[data-accent="orange"] {
+  --accent: oklch(70% 0.155 47);
+  --accent-strong: oklch(63% 0.17 45);
+  --accent-ink: oklch(99% 0.01 70);
+  --accent-soft: oklch(95% 0.04 55);
+  --accent-glow: oklch(70% 0.155 47 / 0.35);
+}
+[data-accent="rose"] {
+  --accent: oklch(70% 0.15 8);
+  --accent-strong: oklch(61% 0.18 10);
+  --accent-ink: oklch(99% 0.01 10);
+  --accent-soft: oklch(95% 0.035 12);
+  --accent-glow: oklch(70% 0.15 8 / 0.35);
+}
+[data-accent="cream"] {
+  --accent: oklch(80% 0.135 85);
+  --accent-strong: oklch(78% 0.145 82);
+  --accent-ink: oklch(32% 0.04 70);
+  --accent-soft: oklch(96% 0.05 90);
+  --accent-glow: oklch(80% 0.135 85 / 0.4);
+}
+
+/* ---- Light theme (warm neutral) ---- */
+[data-theme="light"] {
+  --bg: oklch(98.5% 0.007 75);
+  --bg-tint: oklch(96.5% 0.012 70);
+  --surface: oklch(100% 0 0);
+  --surface-2: oklch(97% 0.008 75);
+  --border: oklch(90% 0.011 70);
+  --border-strong: oklch(84% 0.014 70);
+  --ink: oklch(26% 0.014 60);
+  --ink-soft: oklch(46% 0.013 60);
+  --ink-faint: oklch(62% 0.012 65);
+  --shadow-sm: 0 1px 2px oklch(40% 0.02 60 / .06), 0 1px 3px oklch(40% 0.02 60 / .05);
+  --shadow-md: 0 4px 12px oklch(40% 0.03 60 / .07), 0 2px 4px oklch(40% 0.02 60 / .05);
+  --shadow-lg: 0 12px 32px oklch(40% 0.04 60 / .10), 0 4px 10px oklch(40% 0.03 60 / .06);
+  --skeleton: linear-gradient(100deg, oklch(94% 0.008 70) 30%, oklch(97% 0.01 70) 50%, oklch(94% 0.008 70) 70%);
+}
+
+/* ---- Dark theme (warm dark) ---- */
+[data-theme="dark"] {
+  --bg: oklch(19% 0.012 60);
+  --bg-tint: oklch(22% 0.014 58);
+  --surface: oklch(23.5% 0.014 60);
+  --surface-2: oklch(27% 0.016 60);
+  --border: oklch(32% 0.016 60);
+  --border-strong: oklch(40% 0.018 60);
+  --ink: oklch(94% 0.008 75);
+  --ink-soft: oklch(76% 0.012 70);
+  --ink-faint: oklch(60% 0.013 65);
+  --shadow-sm: 0 1px 2px oklch(0% 0 0 / .25);
+  --shadow-md: 0 4px 14px oklch(0% 0 0 / .32), 0 2px 4px oklch(0% 0 0 / .25);
+  --shadow-lg: 0 14px 38px oklch(0% 0 0 / .42), 0 4px 12px oklch(0% 0 0 / .30);
+  --skeleton: linear-gradient(100deg, oklch(27% 0.014 60) 30%, oklch(31% 0.016 60) 50%, oklch(27% 0.014 60) 70%);
+  /* lift semantic softs for dark */
+  --success-soft: oklch(32% 0.05 150);
+  --error-soft: oklch(32% 0.06 25);
+  --warn-soft: oklch(35% 0.05 80);
+  --accent-soft: oklch(34% 0.05 var(--accent-hue, 50));
+}
+[data-theme="dark"][data-accent="blue"]   { --accent-soft: oklch(34% 0.045 260); --accent: oklch(67% 0.115 260); }
+[data-theme="dark"][data-accent="orange"] { --accent-soft: oklch(33% 0.055 50); }
+[data-theme="dark"][data-accent="rose"]   { --accent-soft: oklch(33% 0.05 12); }
+[data-theme="dark"][data-accent="cream"]  { --accent-soft: oklch(34% 0.05 88); --accent: oklch(82% 0.13 85); }
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  transition: background .4s var(--ease), color .3s var(--ease);
+}
+#root { min-height: 100vh; }
+
+h1, h2, h3, .display { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; }
+.mono { font-family: var(--font-mono); }
+
+a { color: inherit; }
+button { font-family: inherit; cursor: pointer; }
+::selection { background: var(--accent-soft); }
+
+:focus-visible {
+  outline: 2.5px solid var(--accent-strong);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* scrollbar */
+*::-webkit-scrollbar { width: 11px; height: 11px; }
+*::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; border: 3px solid var(--bg); }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+.app-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.page { flex: 1; width: 100%; }
+.container { width: 100%; max-width: var(--max-w); margin: 0 auto; padding: 0 var(--s6); }
+
+/* subtle: minimal flat background (no festive texture) */
+.bg-festive { background: var(--bg); }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--s2);
+  font-family: var(--font-body); font-weight: 600; font-size: 15px;
+  border: 1px solid transparent; border-radius: var(--r-md);
+  padding: 11px 18px; min-height: 44px;
+  transition: transform .12s var(--ease), background .2s var(--ease),
+              box-shadow .2s var(--ease), border-color .2s var(--ease), color .2s;
+  white-space: nowrap; user-select: none;
+}
+.btn:active { transform: translateY(1px) scale(.985); }
+
+.btn-primary {
+  background: var(--accent-strong); color: var(--accent-ink);
+}
+.btn-primary:hover { box-shadow: 0 3px 12px var(--accent-glow); transform: translateY(-1px); }
+
+.btn-ghost {
+  background: transparent; color: var(--ink-soft); border-color: var(--border-strong);
+}
+.btn-ghost:hover { background: var(--surface-2); color: var(--ink); }
+
+.btn-soft {
+  background: var(--surface-2); color: var(--ink); border-color: var(--border);
+}
+.btn-soft:hover { background: var(--bg-tint); }
+
+.btn:disabled { cursor: default; opacity: .9; }
+.btn:disabled:active { transform: none; }
+
+/* ============================================================
+   SPINNERS
+   ============================================================ */
+.spinner {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid currentColor; border-top-color: transparent;
+  animation: spin .7s linear infinite; flex: none;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* candle-flame spinner for login */
+.candle-loader { position: relative; width: 64px; height: 84px; }
+
+/* ============================================================
+   PILLS / TAGS
+   ============================================================ */
+.repo-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--font-mono); font-size: 12.5px; font-weight: 500;
+  color: var(--ink-soft); background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: var(--r-pill);
+  padding: 3px 10px 3px 8px; line-height: 1.4;
+}
+.repo-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex: none; }
+
+.date-text { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-faint); }
+
+/* ============================================================
+   ANIMATIONS — gated on prefers-reduced-motion
+   ============================================================ */
+@keyframes skeleton-shimmer { to { background-position-x: -200%; } }
+@keyframes pop-in { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes flame-flicker {
+  0%,100% { transform: translateX(-50%) scale(1) rotate(-1deg); opacity: 1; }
+  50% { transform: translateX(-50%) scale(1.08,1.14) rotate(1.5deg); opacity: .92; }
+}
+@keyframes toast-in { from { opacity: 0; transform: translateY(16px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes confetti-fall {
+  0% { transform: translate3d(0,-10px,0) rotate(0); opacity: 1; }
+  100% { transform: translate3d(var(--cx,0), 86vh, 0) rotate(var(--cr,360deg)); opacity: 0; }
+}
+@keyframes badge-glow-pulse {
+  0%,100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+  50% { box-shadow: 0 0 14px 1px var(--accent-glow); }
+}
+
+.skeleton-bar {
+  background: var(--skeleton); background-size: 200% 100%;
+  border-radius: var(--r-sm); animation: skeleton-shimmer 1.3s ease-in-out infinite;
+}
+.pop-in { animation: pop-in .35s var(--ease) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+  .skeleton-bar { animation: none; opacity: .8; }
+}

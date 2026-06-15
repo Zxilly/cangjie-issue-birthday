@@ -12,3 +12,6 @@ dist-ssr
 
 # design handoff working copy (reference only)
 .design-handoff
+
+# local design docs (not committed)
+docs/

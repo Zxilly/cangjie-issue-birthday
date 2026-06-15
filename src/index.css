@@ -1,0 +1,4 @@
+/* Tailwind v4 (utilities available; design CSS below is the source of truth).
+   main.tsx imports this first, then the design tokens/components so the
+   hand-authored design system always wins on source order. */
+@import 'tailwindcss';

@@ -1,0 +1,14 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.vite
+
+# secrets / local env
+.env
+.env.local
+.env.*.local
+
+# design handoff working copy (reference only)
+.design-handoff

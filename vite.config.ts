@@ -13,5 +13,8 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     allowedHosts: ['birthday.cj.zxilly.dev', 'localhost'],
+    // dev:browser 的持久浏览器 profile 在项目内（.dev-browser-profile/），里面成千上万的
+    // 扩展 HTML 会被文件监听误触发疯狂 reload —— 忽略它。
+    watch: { ignored: ['**/.dev-browser-profile/**'] },
   },
 });

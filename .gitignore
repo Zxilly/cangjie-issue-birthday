@@ -10,6 +10,9 @@ dist-ssr
 .env.local
 .env.*.local
 
+# 本地调试浏览器持久 profile（dev:browser，含登录态，切勿提交）
+.dev-browser-profile/
+
 # design handoff working copy (reference only)
 .design-handoff
 

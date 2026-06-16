@@ -7,9 +7,10 @@ import { issueKey, type Issue } from '../lib/types';
 const ROTATE_MS = 3800;
 
 /**
- * 落地页右侧的「层叠轮播」：把若干真实满周岁 issue 叠成一摞牌，最前一张完整可见、
- * 其后两张自顶部错位露出，自动轮换（hover 暂停、prefers-reduced-motion 下不自动转、
- * 小圆点可手动切换）。下方评论气泡跟随当前卡片。纯展示，外层 aria-hidden。
+ * 落地页右侧的「风琴包扇形层叠轮播」：把若干真实满周岁 issue 像折页褶层那样叠起，最前
+ * 一张完整正立、其后两张错位上移+缩小+微倾露出边缘（样式见 .deck-item），自动轮换
+ *（hover 暂停、prefers-reduced-motion 下不自动转、小圆点可手动切换）。下方评论气泡跟随
+ * 当前卡片。纯展示，外层 aria-hidden。
  */
 export function IssueDeck({ issues }: { issues: Issue[] }) {
   const n = issues.length;
@@ -58,9 +59,9 @@ export function IssueDeck({ issues }: { issues: Issue[] }) {
       )}
 
       <div className="peek-comment">
-        <div className="pc-avatar">OK</div>
+        <div className="pc-avatar">Zx</div>
         <div className="pc-body" key={active}>
-          <div className="pc-meta mono">octo_kai 在 #{current.number} 评论 · 刚刚</div>
+          <div className="pc-meta mono">Zxilly 在 #{current.number} 评论 · 刚刚</div>
           <p className="pc-text">{blessingFor(current.age)}</p>
         </div>
       </div>

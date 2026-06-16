@@ -416,18 +416,19 @@
 /* product peek (split-landing right side) */
 .peek { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 420px; }
 
-/* 层叠轮播：卡片叠成一摞，身后两张自顶部错位露出，最前一张完整可见 */
-.deck { position: relative; display: grid; padding-top: 26px; }
+/* 风琴包扇形层叠：后两张像折页褶层那样错位上移 + 缩小 + 微微左倾露出边缘，
+   最前一张完整正立；轮换时整摞平滑推进。 */
+.deck { position: relative; display: grid; padding-top: 38px; }
 .deck-item {
-  grid-area: 1 / 1; transform-origin: center top;
+  grid-area: 1 / 1; transform-origin: center bottom;
   transition: transform .55s cubic-bezier(.22, .61, .36, 1), opacity .55s ease;
   will-change: transform, opacity;
 }
 .deck-item .card { box-shadow: var(--shadow-md); cursor: default; }
 .deck-item .card:hover { transform: none; box-shadow: var(--shadow-md); border-color: var(--border); }
 .deck-item.s0 { transform: none; opacity: 1; z-index: 3; }
-.deck-item.s1 { transform: translateY(-13px) scale(.955); opacity: .66; z-index: 2; }
-.deck-item.s2 { transform: translateY(-26px) scale(.91); opacity: .4; z-index: 1; }
+.deck-item.s1 { transform: translateY(-18px) scale(.95) rotate(-2.6deg); opacity: .72; z-index: 2; }
+.deck-item.s2 { transform: translateY(-35px) scale(.9) rotate(-5.2deg); opacity: .45; z-index: 1; }
 .deck-item:not(.s0) { pointer-events: none; }
 .deck-item:not(.s0) .card { box-shadow: var(--shadow-sm); }
 

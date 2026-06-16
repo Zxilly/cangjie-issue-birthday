@@ -1,31 +1,53 @@
 import { Brand, ThemeToggle } from '../components/Header';
-import { IssueCard } from '../components/IssueCard';
+import { IssueDeck } from '../components/IssueDeck';
 import { Ico } from '../components/icons';
 import { COPY } from '../lib/copy';
-import { blessingFor } from '../lib/cake';
 import { ageInfo, fmtDate } from '../lib/age';
 import type { CSSProperties } from 'react';
 import type { Issue } from '../lib/types';
 
-// 落地页右侧「产品实拍」用的示例 issue（纯展示）
-function sampleIssue(): Issue {
-  const createdISO = '2020-09-03T00:00:00+08:00';
-  const info = ageInfo(createdISO);
-  return {
-    number: '4012',
-    owner: 'Cangjie',
-    repo: 'cangjie_compiler',
-    title: '泛型实例化在跨模块场景下偶发类型擦除，希望补全错误诊断信息',
-    createdISO,
-    createdLabel: fmtDate(createdISO),
-    url: 'https://gitcode.com/Cangjie/cangjie_compiler/issues/4012',
-    comments: 27,
-    age: info.years,
-    ageDays: info.ageDays,
-    daysToNext: info.daysToNext,
-    isBirthdayToday: info.isBirthdayToday,
-    eligible: info.years >= 1,
-  };
+// 落地页右侧层叠轮播用的真实示例（取自 Cangjie/UsersForum 的满周岁 issue，纯展示）。
+// 数据快照于 2026-06；年龄/倒计时由 ageInfo 按当前日期实时计算。
+const SHOWCASE_RAW = [
+  {
+    number: '518',
+    title: '【需求】支持 ccache/sccache 缓存',
+    createdISO: '2024-07-24T15:23:29+08:00',
+    comments: 7,
+  },
+  {
+    number: '811',
+    title: '【缺陷】无法在宏包中编写单元测试',
+    createdISO: '2024-08-19T03:33:50+08:00',
+    comments: 1,
+  },
+  {
+    number: '833',
+    title: '【咨询】如何在编译期计算 Expr 的类型？',
+    createdISO: '2024-08-20T21:20:59+08:00',
+    comments: 6,
+  },
+] as const;
+
+function showcaseIssues(): Issue[] {
+  return SHOWCASE_RAW.map((r) => {
+    const info = ageInfo(r.createdISO);
+    return {
+      number: r.number,
+      owner: 'Cangjie',
+      repo: 'UsersForum',
+      title: r.title,
+      createdISO: r.createdISO,
+      createdLabel: fmtDate(r.createdISO),
+      url: `https://gitcode.com/Cangjie/UsersForum/issues/${r.number}`,
+      comments: r.comments,
+      age: info.years,
+      ageDays: info.ageDays,
+      daysToNext: info.daysToNext,
+      isBirthdayToday: info.isBirthdayToday,
+      eligible: info.years >= 1,
+    };
+  });
 }
 
 const TRANSPARENT_APPBAR: CSSProperties = {
@@ -43,7 +65,7 @@ export function Landing({
   onToggleTheme: () => void;
   onLogin: () => void;
 }) {
-  const sample = sampleIssue();
+  const showcase = showcaseIssues();
   return (
     <div className="landing bg-festive layout-split">
       <header className="appbar" style={TRANSPARENT_APPBAR}>
@@ -67,18 +89,7 @@ export function Landing({
         </div>
 
         <div className="landing-visual" aria-hidden="true">
-          <div className="peek">
-            <div className="peek-card">
-              <IssueCard issue={sample} btnState="sent" onSend={() => {}} layout="compact" index={0} />
-            </div>
-            <div className="peek-comment">
-              <div className="pc-avatar">OK</div>
-              <div className="pc-body">
-                <div className="pc-meta mono">octo_kai 在 #{sample.number} 评论 · 刚刚</div>
-                <p className="pc-text">{blessingFor(sample.age)}</p>
-              </div>
-            </div>
-          </div>
+          <IssueDeck issues={showcase} />
         </div>
       </main>
 

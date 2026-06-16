@@ -415,8 +415,37 @@
 
 /* product peek (split-landing right side) */
 .peek { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 420px; }
-.peek-card .card { box-shadow: var(--shadow-md); cursor: default; }
-.peek-card .card:hover { transform: none; box-shadow: var(--shadow-md); border-color: var(--border); }
+
+/* 层叠轮播：卡片叠成一摞，身后两张自顶部错位露出，最前一张完整可见 */
+.deck { position: relative; display: grid; padding-top: 26px; }
+.deck-item {
+  grid-area: 1 / 1; transform-origin: center top;
+  transition: transform .55s cubic-bezier(.22, .61, .36, 1), opacity .55s ease;
+  will-change: transform, opacity;
+}
+.deck-item .card { box-shadow: var(--shadow-md); cursor: default; }
+.deck-item .card:hover { transform: none; box-shadow: var(--shadow-md); border-color: var(--border); }
+.deck-item.s0 { transform: none; opacity: 1; z-index: 3; }
+.deck-item.s1 { transform: translateY(-13px) scale(.955); opacity: .66; z-index: 2; }
+.deck-item.s2 { transform: translateY(-26px) scale(.91); opacity: .4; z-index: 1; }
+.deck-item:not(.s0) { pointer-events: none; }
+.deck-item:not(.s0) .card { box-shadow: var(--shadow-sm); }
+
+.deck-dots { display: flex; gap: 6px; justify-content: flex-end; padding-right: 4px; margin-top: -4px; }
+.deck-dot {
+  width: 7px; height: 7px; padding: 0; border: none; border-radius: 50%; cursor: pointer;
+  background: var(--border); transition: background .25s, transform .25s;
+}
+.deck-dot.on { background: var(--accent-strong); transform: scale(1.25); }
+
+/* 评论气泡随当前卡片淡入 */
+.pc-body { animation: pc-fade .45s ease; }
+@keyframes pc-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .deck-item { transition: none; }
+  .pc-body { animation: none; }
+}
+
 .peek-comment {
   display: flex; gap: 11px; align-items: flex-start;
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg);

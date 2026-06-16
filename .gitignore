@@ -13,6 +13,9 @@ dist-ssr
 # 本地调试浏览器持久 profile（dev:browser，含登录态，切勿提交）
 .dev-browser-profile/
 
+# 本地调试截图（agent-browser screenshot 输出）
+.dev-shots/
+
 # Cloudflare 本地开发：密钥与缓存
 .dev.vars
 .wrangler/

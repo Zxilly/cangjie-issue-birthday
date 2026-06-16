@@ -28,7 +28,7 @@ import {
   RateLimitError,
   getCurrentUser,
   getIssueComments,
-  getMyOrgIssues,
+  getMyCreatedIssues,
   postIssueComment,
 } from './lib/gitcode';
 import { buildCakeComment, hasCakeComment } from './lib/cake';
@@ -125,7 +125,7 @@ export function App() {
       }
       const [u, list] = await Promise.all([
         getCurrentUser(token).catch(() => null),
-        getMyOrgIssues(token),
+        getMyCreatedIssues(token),
       ]);
       if (u) setUser(u);
 

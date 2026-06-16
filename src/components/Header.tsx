@@ -60,7 +60,9 @@ export function Header({
         <div className="user-chip">
           <ThemeToggle dark={dark} onToggle={onToggleTheme} />
           {user.avatarUrl ? (
-            <img className="avatar" src={user.avatarUrl} alt="" />
+            // GitCode CDN（cdn-img.gitcode.com）对图片有防盗链：带 Referer 会 403，
+            // 不带则 200。用 no-referrer 让 <img> 不发 Referer。
+            <img className="avatar" src={user.avatarUrl} alt="" referrerPolicy="no-referrer" />
           ) : (
             <div
               className="avatar"

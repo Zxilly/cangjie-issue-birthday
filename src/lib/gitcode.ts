@@ -121,25 +121,35 @@ function mapIssue(raw: RawIssue): Issue | null {
 
 /**
  * 拉取「当前登录用户在 Cangjie 组织里创建的、未关闭的」全部 issue（分页直到取完）。
+ *
+ * 不用 `/orgs/{org}/issues`：实测对 `Cangjie` 该端点恒返回空（filter=created/all/默认
+ * 皆 200 但 0 条），即使应用已开通组织权限也一样——GitCode 的 org issue 端点查不到这些
+ * issue。改用 `/user/issues`（列出当前用户创建的 issue，跨全部仓库，返回项带 repository
+ * .full_name），再在前端按 owner === ORG 过滤出目标组织。
+ *
+ * 命名注意：本函数并不调用任何 `/orgs` 端点，别据名改回 `/orgs/{org}/issues`。
  */
-export async function getMyOrgIssues(token: string): Promise<Issue[]> {
+export async function getMyCreatedIssues(token: string): Promise<Issue[]> {
   const out: Issue[] = [];
   const PER_PAGE = 100;
-  for (let page = 1; page <= 20; page++) {
+  const org = ORG.toLowerCase();
+  // /user/issues 跨用户全部仓库，靠下方 arr.length<PER_PAGE 自然翻完；page 上限只是防御性
+  // 死循环保护（50×100=5000 条，远超个人创建量）。
+  for (let page = 1; page <= 50; page++) {
+    // 不要带 sort 参数：GitCode 的 /user/issues 会把它当作 order_by 校验，sort=created
+    // 会触发 400「Invalid query parameter: order_by, enum value required」。列表在前端自行排序。
     const q = new URLSearchParams({
       filter: 'created',
       state: 'open',
-      sort: 'created',
-      direction: 'asc',
       per_page: String(PER_PAGE),
       page: String(page),
     });
-    const res = await api(`/orgs/${ORG}/issues?${q.toString()}`, token);
+    const res = await api(`/user/issues?${q.toString()}`, token);
     const arr = (await res.json()) as RawIssue[];
     if (!Array.isArray(arr) || arr.length === 0) break;
     for (const raw of arr) {
       const mapped = mapIssue(raw);
-      if (mapped) out.push(mapped);
+      if (mapped && mapped.owner.toLowerCase() === org) out.push(mapped);
     }
     if (arr.length < PER_PAGE) break;
   }

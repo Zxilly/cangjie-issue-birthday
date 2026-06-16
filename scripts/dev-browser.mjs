@@ -69,11 +69,10 @@ if (!browser) {
     `--user-data-dir=${PROFILE_DIR}`,
     `--host-resolver-rules=MAP ${HOST}:443 127.0.0.1:${PORT}`,
     '--ignore-certificate-errors',
-    // 关闭同源策略：GitCode token 端点对 200 回显 Origin，但 4xx 错误响应往往不带 CORS 头，
-    // 导致浏览器拦截、连错误体都读不到。仅用于本地调试（--disable-web-security 需配合
-    // --disable-features=IsolateOrigins,site-per-process 才会真正生效）。
-    '--disable-web-security',
-    '--disable-features=IsolateOrigins,site-per-process',
+    // 注意：刻意【不】关闭同源策略。token 交换经同域 Pages Function 代理（同源，无 CORS）、
+    // api.gitcode.com 本身带 CORS，整个 app 已是 CORS 干净的；--disable-web-security 反而会
+    // 掩盖真实 CORS 行为（它甚至会让跨域请求不发 Origin 头），使 dev 与生产不一致。需临时看
+    // 跨域错误体时再单独加。
     // CDP 远程调试：供 agent-browser 连接驱动；--remote-allow-origins 是 Chrome 111+
     // 允许 CDP websocket 连接的必要项。
     `--remote-debugging-port=${CDP_PORT}`,

@@ -1,0 +1,12 @@
+# Cloudflare Pages 项目配置（前端静态站 + functions/ 下的 Pages Functions）
+name = "cangjie-issue-birthday"
+compatibility_date = "2025-06-01"
+pages_build_output_dir = "dist"
+
+# 公开变量：GitCode OAuth 应用的 client_id（非机密；也用于前端授权 URL）
+[vars]
+GITCODE_CLIENT_ID = "1da4d36659e04e70bd1719222f9fbb14"
+
+# 机密 GITCODE_CLIENT_SECRET 切勿写在这里。生产用：
+#   wrangler pages secret put GITCODE_CLIENT_SECRET
+# 本地 `wrangler pages dev` 用根目录 .dev.vars（已 gitignore）。

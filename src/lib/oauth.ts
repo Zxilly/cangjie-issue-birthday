@@ -1,14 +1,7 @@
 /* ============================================================
    蛋糕日 CakeDay — OAuth（纯浏览器，authorization_code）
    ============================================================ */
-import {
-  AUTHORIZE_URL,
-  TOKEN_URL,
-  CLIENT_ID,
-  CLIENT_SECRET,
-  SCOPE,
-  redirectUri,
-} from './config';
+import { AUTHORIZE_URL, CLIENT_ID, SCOPE, TOKEN_PROXY_URL, redirectUri } from './config';
 
 export interface TokenResponse {
   access_token: string;
@@ -31,13 +24,15 @@ export function buildAuthorizeUrl(state: string): string {
   return `${AUTHORIZE_URL}?${p.toString()}`;
 }
 
-// token 端点的所有参数（含 client_secret）一律走 query、不带 body：GitCode 文档把
-// client_secret 标为 JSON body 参数，但实测服务端只从 query 读取它（照文档放 body 会报
-// 「client_secret不能为空」，且无 body 也能正常换取/刷新）。
-async function postToken(op: string, params: Record<string, string>): Promise<TokenResponse> {
-  const res = await fetch(`${TOKEN_URL}?${new URLSearchParams(params).toString()}`, {
+// token 交换/刷新经同域 Cloudflare Pages Function 代理（TOKEN_PROXY_URL='/oauth/token'，
+// 见 functions/oauth/token.js）：gitcode.com/oauth/token 的实际响应不带 CORS 头，纯浏览器读
+// 不到；函数在服务端补 client_id/client_secret 调 GitCode 再原样回传。因与前端同源，无 CORS
+// 问题；前端只发公开参数，secret 不进前端包。
+async function postToken(op: string, body: Record<string, string>): Promise<TokenResponse> {
+  const res = await fetch(TOKEN_PROXY_URL, {
     method: 'POST',
-    headers: { Accept: 'application/json' },
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(body),
   });
   if (!res.ok) {
     const detail = await res.text().catch(() => '');
@@ -50,8 +45,6 @@ export async function exchangeCodeForToken(code: string): Promise<TokenResponse>
   return postToken('换取 token', {
     grant_type: 'authorization_code',
     code,
-    client_id: CLIENT_ID,
-    client_secret: CLIENT_SECRET,
     redirect_uri: redirectUri(),
   });
 }
@@ -61,7 +54,5 @@ export async function refreshAccessToken(refreshToken: string): Promise<TokenRes
   return postToken('刷新 token', {
     grant_type: 'refresh_token',
     refresh_token: refreshToken,
-    client_id: CLIENT_ID,
-    client_secret: CLIENT_SECRET,
   });
 }

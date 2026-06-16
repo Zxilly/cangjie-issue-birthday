@@ -2,7 +2,6 @@
 
 interface ImportMetaEnv {
   readonly VITE_GITCODE_CLIENT_ID?: string;
-  readonly VITE_GITCODE_CLIENT_SECRET?: string;
 }
 
 interface ImportMeta {
